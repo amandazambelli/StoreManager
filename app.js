@@ -1,11 +1,13 @@
 const express = require('express');
 const productsRoute = require('./routes/productsRoute');
+const salesRoute = require('./routes/salesRoute');
 
 const app = express();
 
 app.use(express.json());
 
 app.use('/products', productsRoute);
+app.use('/sales', salesRoute);
 
 app.use((req, res, next) => {
   res.status(500).json({ message: 'Erro no servidor' });

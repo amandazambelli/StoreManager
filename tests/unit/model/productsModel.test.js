@@ -15,7 +15,7 @@ describe('Busca um produto específico pelo id', () => {
     connection.execute.restore();
   });
 
-  describe('quando não existe um produto com o ID informado', () => {
+  describe('quando não existe um produto com o id informado', () => {
     it('retorna null', async () => {
       const response = await productsModel.getById();
       expect(response).to.be.equal(null);
