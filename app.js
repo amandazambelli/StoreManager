@@ -7,6 +7,11 @@ app.use(express.json());
 
 app.use('/products', productsRoute);
 
+app.use((req, res, next) => {
+  res.status(500).json({ message: 'Erro no servidor' });
+  next();
+});
+
 // não remova esse endpoint, é para o avaliador funcionar
 app.get('/', (_request, response) => {
   response.send();
