@@ -9,13 +9,35 @@ const getAll = async (req, res) => {
 const getById = async (req, res) => {
   try {
     const { id } = req.params;
-    const sale = await salesService.getById(id);
+    const sales = await salesService.getById(id);
 
-    if (!sale) {
+    if (!sales) {
       return res.status(404).json({ message: 'Sale not found' });
     }
 
-    res.status(200).json(sale);
+    const listSalesById = sales.map((sale) => ({
+      date: sale.date,
+      productId: sale.productId,
+      quantity: sale.quantity,
+    }));
+
+    res.status(200).json(listSalesById);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }  
+};
+
+const deleted = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const sales = await salesService.deleted(id);
+
+    if (!sales) {
+      return res.status(404).json({ message: 'Sale not found' });
+    }
+
+    res.status(204).end();
   } catch (err) {
     res.status(500).json({ message: err.message });
   }  
@@ -24,4 +46,5 @@ const getById = async (req, res) => {
 module.exports = {
   getAll,
   getById,
+  deleted,
 };

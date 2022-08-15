@@ -9,7 +9,7 @@ const getAll = async () => {
     ORDER BY sale_id, product_id`,
   );
 
-  if (salesData === 0) return null;
+  if (salesData.length === 0) return null;
 
   const salesGetAll = salesData.map((prods) => ({
       saleId: prods.sale_id,
@@ -31,7 +31,7 @@ const getById = async (id) => {
     [id],
   );
 
-  if (salesData === 0) return null;
+  if (salesData.length === 0) return null;
 
   const salesGetById = salesData.map((sales) => ({
     saleId: sales.sale_id,
@@ -43,4 +43,17 @@ const getById = async (id) => {
   return salesGetById;
 };
 
-module.exports = { getAll, getById };
+const deleted = async (id) => {
+  await connection.execute(
+   'DELETE FROM StoreManager.sales WHERE id = ?',
+    [id],
+  );
+
+  return id;
+};
+  
+module.exports = {
+  getAll,
+  getById,
+  deleted,
+};

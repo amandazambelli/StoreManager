@@ -10,7 +10,18 @@ const getById = async (id) => {
   return sale;
 };
 
+const deleted = async (id) => {
+  const getSale = await salesModel.getById(id);
+
+  if (!getSale) return null;
+
+  const sale = await salesModel.deleted(id);
+
+  return sale;
+};
+
 module.exports = {
   getAll,
   getById,
+  deleted,
 };

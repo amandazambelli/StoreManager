@@ -42,6 +42,7 @@ const update = async (req, res) => {
     const { id } = req.params;
 
     const product = await productsService.update(id, name);
+    console.log(product);
 
     if (!product) {
       return res.status(404).json({ message: 'Product not found' });
@@ -63,7 +64,7 @@ const deleted = async (req, res) => {
       return res.status(404).json({ message: 'Product not found' });
     }
 
-    res.status(200).end();
+    res.status(204).end();
   } catch (err) {
     res.status(500).json({ message: err.message });
   }  

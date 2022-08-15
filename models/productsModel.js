@@ -29,7 +29,7 @@ const create = async ({ name }) => {
 const update = async ({ id, name }) => {
   await connection.execute(
     'UPDATE StoreManager.products SET name = ? WHERE id = ?',
-    [id, name],
+    [name, id],
   );
 
   return { id, name };

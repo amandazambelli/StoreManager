@@ -20,6 +20,7 @@ const create = async (name) => {
 
 const update = async (id, name) => {
   const getProduct = await productsModel.getById(id);
+  console.log(getProduct);
 
   if (!getProduct) return null;
 
