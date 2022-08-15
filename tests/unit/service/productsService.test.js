@@ -5,60 +5,90 @@ const connection = require('../../models/connection');
 const productsModel = require('../../../models/productsModel');
 const productsService = require('../../../services/productsService');
 
-describe('Busca um produto no Banco de Dados pelo id', () => {
+describe('Testes do arquivo productsService.js', () => {
 
-  before(async () => {
-    const execute = [[]];
-
-    sinon.stub(connection, 'execute').resolves(execute);
-  });
-
-  after(async () => {
-    connection.execute.restore();
-  });
-
-  describe('quando não existe um produto com o id informado', async () => {
+  describe('Busca todos os produtos', () => {
     
-    it('retorna null', async () => {
-      const response = await productsService.getById();
+    const products = [
+      { id: 1, name: 'Martelo de Thor' },
+      { id: 2, name: 'Traje de encolhimento' },
+      { id: 3, name: 'Escudo do Capitão América' },
+    ];
 
-      expect(response).to.be.equal('null');
+    before(async () => {
+      const execute = [products];
+
+      sinon.stub(productsModel, 'getAll').resolves(products);
+    });
+
+    after(async () => {
+      productsModel.getAll.restore();
+    });
+
+    it('quando os produtos são retornados corretamente', async () => {
+      const response = await productsService.getAll();
+
+      expect(response).to.be.an('object');
+      expect(response).to.be.not.empty;
+      expect(response[0]).to.include.all.keys('id', 'name');
     });
   });
 
-  describe('quando existe um produto com o id informado', async () => {
+  describe('Busca um produto no Banco de Dados pelo id', () => {
 
-    before(() => {
+    before(async () => {
+      const execute = [[]];
 
-      sinon.stub(productsModel, 'getById')
-        .resolves(
-          {
-            id: 1,
-            name: 'Produto X',
-          }
-        );
+      sinon.stub(connection, 'execute').resolves(execute);
     });
 
-    after(() => {
-      productsModel.getById.restore();
+    after(async () => {
+      connection.execute.restore();
     });
 
-    it('retorna um objeto', async () => {
-      const response = await productsService.getById(1);
-  
-      expect(response).to.be.an('object');
+    describe('quando não existe um produto com o id informado', async () => {
+      
+      it('retorna null', async () => {
+        const response = await productsService.getById();
+
+        expect(response).to.be.equal('null');
+      });
     });
-  
-    it('o objeto não está vazio', async () => {
-      const response = await productsService.getById(1);
-  
-      expect(response).to.be.not.empty;
-    });
-  
-    it('o objeto possui as propriedades: "id" e "name"', async () => {
-      const response = await productsService.getById(1);
-  
-      expect(response).to.include.all.keys('id', 'name');
+
+    describe('quando existe um produto com o id informado', async () => {
+
+      before(() => {
+
+        sinon.stub(productsModel, 'getById')
+          .resolves(
+            {
+              id: 1,
+              name: 'Martelo de Thor',
+            }
+          );
+      });
+
+      after(() => {
+        productsModel.getById.restore();
+      });
+
+      it('retorna um objeto', async () => {
+        const response = await productsService.getById(1);
+    
+        expect(response).to.be.an('object');
+      });
+    
+      it('o objeto não está vazio', async () => {
+        const response = await productsService.getById(1);
+    
+        expect(response).to.be.not.empty;
+      });
+    
+      it('o objeto possui as propriedades: "id" e "name"', async () => {
+        const response = await productsService.getById(1);
+    
+        expect(response).to.include.all.keys('id', 'name');
+      });
     });
   });
 });

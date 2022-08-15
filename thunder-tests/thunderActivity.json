@@ -64,9 +64,14 @@
     "method": "GET",
     "sortNum": 0,
     "created": "2022-08-11T23:10:18.993Z",
-    "modified": "2022-08-11T23:36:30.182Z",
+    "modified": "2022-08-15T20:41:10.807Z",
     "headers": [],
     "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n    name: 'Amanda Zambelli',\n}",
+      "form": []
+    },
     "tests": []
   },
   {
@@ -109,6 +114,63 @@
     "modified": "2022-08-11T23:36:35.749Z",
     "headers": [],
     "params": [],
+    "tests": []
+  },
+  {
+    "_id": "79e5ff59-8e98-4800-8604-afc7130e73cb",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:3000/sales",
+    "url": "http://localhost:3000/sales",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2022-08-15T20:41:15.156Z",
+    "modified": "2022-08-15T20:56:01.761Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n    \"name\": \"Amanda Zambelli\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "86c9b54d-3328-49ba-9d85-ff4c8536cdc9",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:3000/product",
+    "url": "http://localhost:3000/product",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2022-08-15T20:56:18.101Z",
+    "modified": "2022-08-15T20:56:18.151Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n    \"name\": \"Amanda Zambelli\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "7f2c5668-3e65-468d-a986-68168c653f33",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:3000/products",
+    "url": "http://localhost:3000/products",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2022-08-15T20:56:20.104Z",
+    "modified": "2022-08-15T20:57:02.586Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n    \"name\": \"Amanda Zambelli\"\n}",
+      "form": []
+    },
     "tests": []
   }
 ]
