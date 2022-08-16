@@ -125,12 +125,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2022-08-15T20:41:15.156Z",
-    "modified": "2022-08-15T20:56:01.761Z",
+    "modified": "2022-08-16T20:39:40.084Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"name\": \"Amanda Zambelli\"\n}",
+      "raw": " [\n    {\n      \"productId\": 10,\n      \"quantity\":1\n    },\n    {\n      \"productId\": 2,\n      \"quantity\":5\n    }\n  ]",
       "form": []
     },
     "tests": []
@@ -190,6 +190,40 @@
       "raw": "  {\n    \"name\": \"Martelo do Batman\"\n  }",
       "form": []
     },
+    "tests": []
+  },
+  {
+    "_id": "ab08f6b7-1758-4e73-8cc1-0738e316b66a",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:3000/products/search?q=Mar",
+    "url": "http://localhost:3000/products/search?q=Mar",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2022-08-16T17:40:38.999Z",
+    "modified": "2022-08-16T17:48:22.053Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "q",
+        "value": "Mar",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "a2238d80-4a67-4469-be83-7536bed46e99",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:3000/products/search q=Mar",
+    "url": "http://localhost:3000/products/search q=Mar",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2022-08-16T17:43:47.273Z",
+    "modified": "2022-08-16T17:48:14.838Z",
+    "headers": [],
+    "params": [],
     "tests": []
   }
 ]

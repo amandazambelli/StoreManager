@@ -10,6 +10,15 @@ const getById = async (id) => {
   return sale;
 };
 
+const create = async (sales) => {
+  const saleId = await salesModel.createSales();
+
+  await Promise.all(sales.map((sale) =>
+    salesModel.createSalesProduct(saleId, sale.productId, sale.quantity)));
+
+  return { id: saleId, itemsSold: sales };
+};
+
 const deleted = async (id) => {
   const getSale = await salesModel.getById(id);
 
@@ -23,5 +32,6 @@ const deleted = async (id) => {
 module.exports = {
   getAll,
   getById,
+  create,
   deleted,
 };

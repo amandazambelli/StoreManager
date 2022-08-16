@@ -39,10 +39,21 @@ const deleted = async (id) => {
   return product;
 };
 
+const search = async (name) => {
+  const product = await productsModel.search(name);
+
+  console.log(`prod sv ${product}`);
+
+  if (!product || product.length === 0) return null;
+
+  return product;
+};
+
 module.exports = {
   getAll,
   getById,
   create,
   update,
   deleted,
+  search,
 };

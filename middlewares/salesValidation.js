@@ -1,13 +1,35 @@
+const productsModel = require('../models/productsModel');
+
 const saleIsValid = async (req, res, next) => {
-  const { name } = req.body;
-  if (!name) return res.status(400).json({ message: '"name" is required' });
-  if (name.length < 6) {
- return res.status(422).json(
-    { message: '"name" length must be at least 5 characters long' },
-  ); 
-}
+  const productId = req.body.every((sale) => sale.productId !== undefined);
+  const quantity = req.body.every((sale) => sale.quantity !== undefined);
+
+  console.log(quantity);
+
+  const verifyQuantity = req.body.every((sale) => sale.quantity >= 1);
+
+  if (productId === false) {
+    return res.status(400).json({ message: '"productId" is required' });
+  }
+  if (quantity === false) {
+    return res.status(400).json({ message: '"quantity" is required' });
+  }
+  if (verifyQuantity === false) {
+    return res.status(422).json({ message: '"quantity" must be greater than or equal to 1' });
+  }
 
   next();
 };
 
-module.exports = saleIsValid;
+const productValidation = async (req, res, next) => {
+  const isValid = await Promise.all(req.body.map((sale) => productsModel.getById(sale.productId)));
+  console.log(isValid);
+
+  if (isValid.includes(undefined)) {
+    return res.status(404).json({ message: 'Product not found' });
+  }
+
+  next();
+};
+
+module.exports = { saleIsValid, productValidation };

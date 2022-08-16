@@ -27,6 +27,16 @@ const getById = async (req, res) => {
   }  
 };
 
+const create = async (req, res) => {
+  try {
+    const newSale = await salesService.create(req.body);
+
+    res.status(201).json(newSale);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }  
+};
+
 const deleted = async (req, res) => {
   try {
     const { id } = req.params;
@@ -46,5 +56,6 @@ const deleted = async (req, res) => {
 module.exports = {
   getAll,
   getById,
+  create,
   deleted,
 };
