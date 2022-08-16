@@ -78,12 +78,9 @@ const search = async (req, res) => {
 
     console.log(`q ${q}`);
 
-    const getProducts = await productsService.getAll();
-
-    console.log(`getallprod contro ${getProducts}`);
-
     if (q === '') {
-      return res.status(200).json(getProducts);
+      const getAllProducts = await productsService.getAll();
+      return res.status(200).json(getAllProducts);
     }
 
     const product = await productsService.search(q);

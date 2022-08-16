@@ -12,8 +12,6 @@ const getById = async (id) => {
     [id],
   );
 
-  console.log(productData[0]);
-
   if (productData === 0) return null;
 
   return productData[0];
@@ -48,8 +46,8 @@ const deleted = async (id) => {
 
 const search = async (name) => {
   const [productData] = await connection.execute(
-    `SELECT id, name
-    FROM StoreManager.products;
+    `SELECT name
+    FROM StoreManager.products
     WHERE name LIKE ?`,
     [`%${name}%`],
   );

@@ -4,8 +4,6 @@ const saleIsValid = async (req, res, next) => {
   const productId = req.body.every((sale) => sale.productId !== undefined);
   const quantity = req.body.every((sale) => sale.quantity !== undefined);
 
-  console.log(quantity);
-
   const verifyQuantity = req.body.every((sale) => sale.quantity >= 1);
 
   if (productId === false) {
@@ -23,7 +21,6 @@ const saleIsValid = async (req, res, next) => {
 
 const productValidation = async (req, res, next) => {
   const isValid = await Promise.all(req.body.map((sale) => productsModel.getById(sale.productId)));
-  console.log(isValid);
 
   if (isValid.includes(undefined)) {
     return res.status(404).json({ message: 'Product not found' });
