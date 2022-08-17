@@ -20,7 +20,6 @@ const create = async (name) => {
 
 const update = async (id, name) => {
   const getProduct = await productsModel.getById(id);
-  console.log(getProduct);
 
   if (!getProduct) return null;
 
@@ -39,10 +38,8 @@ const deleted = async (id) => {
   return product;
 };
 
-const search = async (name) => {
-  const product = await productsModel.search(name);
-
-  console.log(`prod sv ${product}`);
+const search = async (data) => {
+  const product = await productsModel.search(data);
 
   if (!product || product.length === 0) return null;
 

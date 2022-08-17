@@ -46,13 +46,11 @@ const deleted = async (id) => {
 
 const search = async (name) => {
   const [productData] = await connection.execute(
-    `SELECT name
+    `SELECT id, name
     FROM StoreManager.products
     WHERE name LIKE ?`,
     [`%${name}%`],
   );
-
-  console.log(`model ${productData}`);
 
   return productData;
 };

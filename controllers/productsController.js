@@ -76,16 +76,12 @@ const search = async (req, res) => {
   try {
     const { q } = req.query;
 
-    console.log(`q ${q}`);
-
     if (q === '') {
       const getAllProducts = await productsService.getAll();
       return res.status(200).json(getAllProducts);
     }
 
     const product = await productsService.search(q);
-
-    console.log(`prod cont ${product}`);
 
     if (!product) {
       return res.status(404).json({ message: NOT_FOUND });

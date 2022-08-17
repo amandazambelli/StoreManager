@@ -1,6 +1,6 @@
 const sinon = require('sinon');
 const { expect } = require('chai');
-const connection = require('../../models/connection');
+const connection = require('../../../models/connection');
 
 const salesModel = require('../../../models/salesModel');
 const salesService = require('../../../services/salesService');

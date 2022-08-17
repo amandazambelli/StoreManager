@@ -13,10 +13,24 @@ const getById = async (id) => {
 const create = async (sales) => {
   const saleId = await salesModel.createSales();
 
-  await Promise.all(sales.map((sale) =>
+  await Promise.all(sales.map(async (sale) =>
     salesModel.createSalesProduct(saleId, sale.productId, sale.quantity)));
 
   return { id: saleId, itemsSold: sales };
+};
+
+const update = async ({ id }, sales) => {
+  const getSalebyId = await salesModel.getById(id);
+
+  if (!getSalebyId) return null;
+
+  await salesModel.update(id, sales);
+
+  /* await Promise.all(sales.map(
+    async (sale) => salesModel.update(id, sale),
+  )); */
+  
+  return { saleId: id, itemsUpdated: sales };
 };
 
 const deleted = async (id) => {
@@ -33,5 +47,6 @@ module.exports = {
   getAll,
   getById,
   create,
+  update,
   deleted,
 };
