@@ -50,6 +50,13 @@ describe('Testes do arquivo productsModel.js', () => {
         expect(response).to.be.equal(null);
       });
     });
+
+    describe('quando id informado é zero', () => {
+      it('retorna null', async () => {
+        const response = await productsModel.getById(0);
+        expect(response).to.be.equal([]);
+      });
+    });
       
     describe('quando existe um produto com o id informado', async () => {
 
@@ -106,16 +113,9 @@ describe('Testes do arquivo productsModel.js', () => {
 
   describe('Atualiza um produto específico na função update', () => {
 
-    const product = {
-      name: 'Martelo do Batman'
-    };
-
     before(async () => {
-      const execute = [product];
-
-      sinon.stub(connection, 'execute').resolves(execute);
+      sinon.stub(connection, 'execute').resolves();
     });
-
     after(async () => {
       connection.execute.restore();
     });
@@ -128,20 +128,6 @@ describe('Testes do arquivo productsModel.js', () => {
     });
       
     describe('quando existe um produto com o id informado', async () => {
-
-      before(() => {
-        sinon.stub(productsModel, 'update')
-          .resolves(
-            {
-              id: 1,
-              name: 'Martelo do Batman',
-            }
-          );
-      });
-
-      after(() => {
-        productsModel.update.restore();
-      });
 
       it('retorna um objeto com as propriedades: "id" e "name"', async () => {
         const response = await productsModel.update({ id: 1, name: 'Martelo do Batman' });
@@ -156,11 +142,8 @@ describe('Testes do arquivo productsModel.js', () => {
   describe('Deleta um produto específico na função deleted', () => {
 
     before(async () => {
-      const execute = [];
-
-      sinon.stub(connection, 'execute').resolves(execute);
+      sinon.stub(connection, 'execute').resolves();
     });
-
     after(async () => {
       connection.execute.restore();
     });
@@ -173,22 +156,8 @@ describe('Testes do arquivo productsModel.js', () => {
     });
       
     describe('quando existe um produto com o id informado', async () => {
-
-      before(() => {
-        sinon.stub(productsModel, 'deleted')
-          .resolves(
-            {
-              id: 1,
-            }
-          );
-      });
-
-      after(() => {
-        productsModel.deleted.restore();
-      });
-
       it('retorna o id', async () => {
-        const response = await productsModel.deleted({ id: 1 });
+        const response = await productsModel.deleted(1);
 
         expect(response).to.be.a('number');
         expect(response).to.be.not.empty;
@@ -205,7 +174,7 @@ describe('Testes do arquivo productsModel.js', () => {
 
       sinon.stub(connection, 'execute').resolves(execute);
     });
-
+    
     after(async () => {
       connection.execute.restore();
     });

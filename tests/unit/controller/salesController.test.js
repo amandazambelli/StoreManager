@@ -5,7 +5,7 @@ const productsService = require('../../../services/productsService');
 const productsController = require('../../../controllers/productsController');
 
 describe('Testes do arquivo productsService.js', () => {
-  describe('Ao chamar o controller de getAll na rota de produtos', () => {
+  describe('Ao chamar o controller de getAll na rota de vendas', () => {
 
     const result = {
       data: [
@@ -21,26 +21,26 @@ describe('Testes do arquivo productsService.js', () => {
 
     before(async () => {
       response.status = sinon.stub().return(response);
-      response.json = sinon.stub().return ();
+      response.json = sinon.stub().return();
 
-      sinon.stub(productsService, 'getAll').resolves(result);
+      sinon.stub(salesService, 'getAll').resolves(result);
     });
 
     after(async () => {
-      productsService.getAll.restore();
+      salesService.getAll.restore();
     });
 
-    it('quando os produtos são retornados com status 200', async () => {
-      const response = await productsController.getAll(request, response);
+    it('quando as vendas são retornadas com status 200', async () => {
+      const response = await salesController.getAll(request, response);
 
       expect(response.status.calledWith(200)).to.be.equal(true);
       expect(response.json.calledWith(result.data)).to.be.equal(true);
     });
   });
 
-  describe('Ao chamar o controller de getById na rota de produtos', () => {
+  describe('Ao chamar o controller de getById na rota de vendas', () => {
 
-    describe('quando não existem produtos no Banco de Dados', async () => {
+    describe('quando não existem vendas no Banco de Dados', async () => {
       const response = {};
       const request = {};
 
@@ -52,31 +52,38 @@ describe('Testes do arquivo productsService.js', () => {
         response.send = sinon.stub()
           .returns();
 
-        sinon.stub(productsService, 'getById')
+        sinon.stub(salesService, 'getById')
           .resolves(null);
       });
 
       after(() => {
-        productsService.getById.restore();
+        salesService.getById.restore();
       });
 
-      it('é chamado o status com o código 404', async () => {
-        await productsController.getById(request, response);
+      it('é chamado o status com o código 404 e a mensagem de "Product not found"', async () => {
+        await salesController.getById(request, response);
 
         expect(response.status.calledWith(404)).to.be.equal(true);
-      });
-
-      it('é chamada a mensagem "Product not found"', async () => {
-        await productsController.getById(request, response);
-
         expect(response.message.calledWith('Product not found')).to.be.equal(true);
       });
-
     });
 
-    describe('quando existem produtos no Banco de Dados', async () => {
+    describe('quando existem vendas no Banco de Dados', async () => {
       const response = {};
       const request = {};
+
+      const getSalesById = [
+        {
+          "date": "2021-09-09T04:54:29.000Z",
+          "productId": 1,
+          "quantity": 2
+        },
+        {
+          "date": "2021-09-09T04:54:54.000Z",
+          "productId": 2,
+          "quantity": 2
+        }
+      ];
 
       before(() => {
         request.params = { id: 1 };
@@ -86,27 +93,19 @@ describe('Testes do arquivo productsService.js', () => {
         response.send = sinon.stub()
           .returns();
 
-        sinon.stub(productsService, 'getById')
-          .resolves({
-            id: 1,
-            name: 'Martelo de Thor',
-          });
+        sinon.stub(salesService, 'getById')
+          .resolves(getSalesById);
       });
 
       after(() => {
-        productsService.getById.restore();
+      salesService.getById.restore();
       });
 
-      it('é chamado o status com o código 200', async () => {
-        await productsController.getById(request, response);
+      it('é chamado o status com o código 200 e json com objeto', async () => {
+        await salesController.getById(request, response);
 
         expect(response.status.calledWith(200)).to.be.equal(true);
-      });
-
-      it('é chamado o json com objeto', async () => {
-        await productsController.getById(request, response);
-
-        expect(response.send.calledWith(sinon.match.object).to.be.equal(true));
+        expect(response.json.calledWith(sinon.match.object).to.be.equal(getSalesById));
       });
     });
   });

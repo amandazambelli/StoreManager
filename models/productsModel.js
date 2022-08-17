@@ -12,8 +12,6 @@ const getById = async (id) => {
     [id],
   );
 
-  if (productData === 0) return null;
-
   return productData[0];
 };
 

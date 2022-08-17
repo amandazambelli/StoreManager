@@ -24,12 +24,9 @@ const update = async ({ id }, sales) => {
 
   if (!getSalebyId) return null;
 
-  await salesModel.update(id, sales);
+  const ola = await salesModel.update(id, sales);
+  console.log(ola);
 
-  /* await Promise.all(sales.map(
-    async (sale) => salesModel.update(id, sale),
-  )); */
-  
   return { saleId: id, itemsUpdated: sales };
 };
 

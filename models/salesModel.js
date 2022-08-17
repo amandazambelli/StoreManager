@@ -63,8 +63,10 @@ const update = async (id, sales) => {
     async (sale) => connection.execute(
     'UPDATE StoreManager.sales_products SET quantity = ? WHERE product_id = ? AND sale_id = ?',
     [sale.quantity, sale.productId, id],
-  ),
-));
+    ),
+  ));
+
+  return true;
 };
 
 const deleted = async (id) => {

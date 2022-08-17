@@ -116,49 +116,36 @@ describe('Testes do arquivo salesModel.js', () => {
 
   describe('Atualiza vendas com a função update', () => {
 
-    const product = {
-      name: 'Martelo do Batman'
-    };
-
     before(async () => {
-      const execute = [product];
-
-      sinon.stub(connection, 'execute').resolves(execute);
+      sinon.stub(connection, 'execute').resolves();
     });
-
     after(async () => {
       connection.execute.restore();
     });
 
     describe('quando não existe um produto com o id informado', () => {
       it('retorna null', async () => {
-        const response = await productsModel.getById();
+        const response = await salesModel.getById();
         expect(response).to.be.equal(null);
       });
     });
       
     describe('quando existe um produto com o id informado', async () => {
+      const sales = [
+        {
+          "productId": 1,
+          "quantity": 10
+        },
+        {
+          "productId": 2,
+          "quantity": 50
+        }
+      ];
 
-      before(() => {
-        sinon.stub(productsModel, 'update')
-          .resolves(
-            {
-              id: 1,
-              name: 'Martelo do Batman',
-            }
-          );
-      });
+      it('retorna true', async () => {
+        const response = await salesModel.update(1, sales);
 
-      after(() => {
-        productsModel.update.restore();
-      });
-
-      it('retorna um objeto com as propriedades: "id" e "name"', async () => {
-        const response = await productsModel.update({ id: 1, name: 'Martelo do Batman' });
-
-        expect(response).to.be.an('object');
-        expect(response).to.be.not.empty;
-        expect(response).to.include.all.keys('id', 'name');
+        expect(response).to.be.equal(true);
       });
     });
   });
@@ -166,39 +153,22 @@ describe('Testes do arquivo salesModel.js', () => {
   describe('Deleta vendas específicas com a função deleted', () => {
 
     before(async () => {
-      const execute = [];
-
-      sinon.stub(connection, 'execute').resolves(execute);
+      sinon.stub(connection, 'execute').resolves();
     });
-
     after(async () => {
       connection.execute.restore();
     });
 
     describe('quando não existe uma venda com o id informado', () => {
       it('retorna null', async () => {
-        const response = await salessModel.getById();
+        const response = await salesModel.getById();
         expect(response).to.be.equal(null);
       });
     });
       
     describe('quando existe uma venda com o id informado', async () => {
-
-      before(() => {
-        sinon.stub(productsModel, 'deleted')
-          .resolves(
-            {
-              id: 1,
-            }
-          );
-      });
-
-      after(() => {
-        productsModel.deleted.restore();
-      });
-
       it('retorna o id', async () => {
-        const response = await productsModel.deleted({ id: 1 });
+        const response = await salesModel.deleted(1);
 
         expect(response).to.be.a('number');
         expect(response).to.be.not.empty;
