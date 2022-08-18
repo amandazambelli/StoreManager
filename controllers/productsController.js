@@ -9,88 +9,67 @@ const getAll = async (req, res) => {
 };
 
 const getById = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const product = await productsService.getById(id);
+  const { id } = req.params;
+  const product = await productsService.getById(id);
 
-    if (!product) {
-      return res.status(404).json({ message: NOT_FOUND });
-    }
+  if (!product) {
+    return res.status(404).json({ message: NOT_FOUND });
+  }
 
-    res.status(200).json(product);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }  
+  res.status(200).json(product);
 };
 
 const create = async (req, res) => {
-  try {
-    const { name } = req.body;
-    const product = await productsService.create(name);
+  const { name } = req.body;
+  const product = await productsService.create(name);
 
-    if (!product) {
-      return res.status(404).json({ message: NOT_FOUND });
-    }
+  if (!product) {
+    return res.status(404).json({ message: NOT_FOUND });
+  }
 
-    res.status(201).json(product);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }  
+  res.status(201).json(product);
 };
 
 const update = async (req, res) => {
-  try {
-    const { name } = req.body;
-    const { id } = req.params;
+  const { name } = req.body;
+  const { id } = req.params;
 
-    const product = await productsService.update(id, name);
-    console.log(product);
+  const product = await productsService.update(id, name);
 
-    if (!product) {
-      return res.status(404).json({ message: NOT_FOUND });
-    }
+  if (!product) {
+    return res.status(404).json({ message: NOT_FOUND });
+  }
 
-    res.status(200).json(product);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }  
+  res.status(200).json(product); 
 };
 
 const deleted = async (req, res) => {
-  try {
-    const { id } = req.params;
+  const { id } = req.params;
 
-    const product = await productsService.deleted(id);
+  const product = await productsService.deleted(id);
 
-    if (!product) {
-      return res.status(404).json({ message: NOT_FOUND });
-    }
+  if (!product) {
+    return res.status(404).json({ message: NOT_FOUND });
+  }
 
-    res.status(204).end();
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }  
+  res.status(204).end();
 };
 
 const search = async (req, res) => {
-  try {
-    const { q } = req.query;
+  const { q } = req.query;
 
-    if (q === '') {
-      const getAllProducts = await productsService.getAll();
-      return res.status(200).json(getAllProducts);
-    }
+  if (q === '') {
+    const getAllProducts = await productsService.getAll();
+    return res.status(200).json(getAllProducts);
+  }
 
-    const product = await productsService.search(q);
+  const product = await productsService.search(q);
 
-    if (!product) {
-      return res.status(404).json({ message: NOT_FOUND });
-    }
+  if (!product) {
+    return res.status(404).json({ message: NOT_FOUND });
+  }
     
-    res.status(200).json(product);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }  
+  res.status(200).json(product);
 };
 
 module.exports = {

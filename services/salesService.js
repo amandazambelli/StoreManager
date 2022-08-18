@@ -24,8 +24,7 @@ const update = async ({ id }, sales) => {
 
   if (!getSalebyId) return null;
 
-  const ola = await salesModel.update(id, sales);
-  console.log(ola);
+  await salesModel.update(id, sales);
 
   return { saleId: id, itemsUpdated: sales };
 };

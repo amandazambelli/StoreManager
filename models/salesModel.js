@@ -2,7 +2,7 @@ const connection = require('./connection');
 
 const getAll = async () => {
   const [salesData] = await connection.execute(
-    `SELECT sp.sale_id, sal.date, sp.product_id, sp.quantity
+    `SELECT sp.sale_id AS saleId, sal.date, sp.product_id AS productId, sp.quantity
     FROM StoreManager.sales_products AS sp
     JOIN StoreManager.sales AS sal
     ON sal.id = sp.sale_id
@@ -11,19 +11,12 @@ const getAll = async () => {
 
   if (salesData.length === 0) return null;
 
-  const salesGetAll = salesData.map((prods) => ({
-      saleId: prods.sale_id,
-      date: prods.date,
-      productId: prods.product_id,
-      quantity: prods.quantity,
-  }));
-
-  return salesGetAll;
+  return salesData;
 };
 
 const getById = async (id) => {
   const [salesData] = await connection.execute(
-    `SELECT sp.sale_id, sal.date, sp.product_id, sp.quantity
+    `SELECT sal.date, sp.product_id AS productId, sp.quantity
     FROM StoreManager.sales_products AS sp
     JOIN StoreManager.sales AS sal
     ON sal.id = sp.sale_id
@@ -33,14 +26,7 @@ const getById = async (id) => {
 
   if (salesData.length === 0) return null;
 
-  const salesGetById = salesData.map((sales) => ({
-    saleId: sales.sale_id,
-    date: sales.date,
-    productId: sales.product_id,
-    quantity: sales.quantity,
-  }));
-
-  return salesGetById;
+  return salesData;
 };
 
 const createSales = async () => {
@@ -56,6 +42,8 @@ const createSalesProduct = async (saleId, productId, quantity) => {
     'INSERT INTO StoreManager.sales_products (sale_id, product_id, quantity) VALUES (?, ?, ?)',
     [saleId, productId, quantity],
   );
+
+  return true;
 };
 
 const update = async (id, sales) => {

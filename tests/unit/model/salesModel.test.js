@@ -5,9 +5,30 @@ const salesModel = require('../../../models/salesModel');
 
 describe('Testes do arquivo salesModel.js', () => {
   describe('Lista todas as vendas com a função getAll', () => {
+
+    const sales = [
+      {
+        "saleId": 1,
+        "date": "2021-09-09T04:54:29.000Z",
+        "productId": 1,
+        "quantity": 2
+      },
+      {
+        "saleId": 1,
+        "date": "2021-09-09T04:54:54.000Z",
+        "productId": 2,
+        "quantity": 2
+      },
+      {
+        "saleId": 2,
+        "date": "2022-08-18T17:57:10.000Z",
+        "productId": 3,
+        "quantity": 15
+      }
+    ];
     
     before(async () => {
-      const execute = [];
+      const execute = [sales];
 
       sinon.stub(connection, 'execute').resolves(execute);
     });
@@ -27,8 +48,48 @@ describe('Testes do arquivo salesModel.js', () => {
 
   describe('Busca uma venda específica pelo id', () => {
 
+    const sales = [
+      {
+        "saleId": 1,
+        "date": "2021-09-09T04:54:29.000Z",
+        "productId": 1,
+        "quantity": 2
+      },
+      {
+        "saleId": 1,
+        "date": "2021-09-09T04:54:54.000Z",
+        "productId": 2,
+        "quantity": 2
+      },
+    ];
+
     before(async () => {
-      const execute = [[]];
+      const execute = [sales];
+
+      sinon.stub(connection, 'execute').resolves(execute);
+    });
+
+    after(async () => {
+      connection.execute.restore();
+    });
+    
+    describe('quando existe uma venda com o id informado', async () => {
+      it('retorna um objeto com as propriedades: "saleId", "date", "productId" e "quantity"', async () => {
+        const response = await salesModel.getById();
+
+        expect(response).to.be.an('array');
+        expect(response).to.be.not.empty;
+        expect(response[0]).to.include.all.keys('saleId', 'date', 'productId', 'quantity');
+      });
+    });
+  });
+
+  describe('Testa função createSales', () => {
+
+    const id = 10;
+    
+    before(async () => {
+      const execute = [id];
 
       sinon.stub(connection, 'execute').resolves(execute);
     });
@@ -37,79 +98,27 @@ describe('Testes do arquivo salesModel.js', () => {
       connection.execute.restore();
     });
 
-    describe('quando não existe uma venda com o id informado', () => {
-      it('retorna null', async () => {
-        const response = await salesModel.getById();
-        expect(response).to.be.equal(null);
-      });
-    });
-    
-    describe('quando existe uma venda com o id informado', async () => {
+    it('quando a função é executada corretamente', async () => {
+      const response = await salesModel.createSales();
 
-      before(() => {
-        sinon.stub(salesModel, 'getById')
-          .resolves(
-            [
-              {
-                "saleId": 1,
-                "date": "2021-09-09T04:54:29.000Z",
-                "productId": 1,
-                "quantity": 2
-              },
-              {
-                "saleId": 1,
-                "date": "2021-09-09T04:54:54.000Z",
-                "productId": 2,
-                "quantity": 2
-              }
-            ]
-          );
-      });
-
-      after(() => {
-        salesModel.getById.restore();
-      });
-
-      it('retorna um objeto com as propriedades: "saleId", "date", "productId" e "quantity"', async () => {
-        const response = await salesModel.getById(1);
-
-        expect(response).to.be.an('object');
-        expect(response).to.be.not.empty;
-        expect(response).to.include.all.keys('saleId', 'date', 'productId', 'quantity');
-      });
+      expect(response).to.be.eq(10);
     });
   });
 
-  describe('Cadastra nova venda com a função create', () => {
+  describe('Cadastra nova venda com a função createSalesProduct', () => {
     
-    const sale = [
-    {
-      "productId": 1,
-      "quantity":1
-    },
-    {
-      "productId": 2,
-      "quantity":5
-    }
-  ]
-
     before(async () => {
-      const execute = [sale];
-
-      sinon.stub(connection, 'execute').resolves(execute);
+      sinon.stub(connection, 'execute').resolves();
     });
-
     after(async () => {
       connection.execute.restore();
     });
 
     describe('quando uma venda é cadastrada corretamente', async () => {
-      it('retorna um objeto com as propriedades: "id" e "name"', async () => {
-      const response = await productsModel.create({ name: 'ProdutoX' });
+      it('retorna true', async () => {
+      const response = await salesModel.createSalesProduct(1, 2, 2);
 
-      expect(response).to.be.an('object');
-      expect(response).to.be.not.empty;
-      expect(response).to.include.all.keys('id', 'name');
+      expect(response).to.be.equal(true);
       });
     });
   });
@@ -121,13 +130,6 @@ describe('Testes do arquivo salesModel.js', () => {
     });
     after(async () => {
       connection.execute.restore();
-    });
-
-    describe('quando não existe um produto com o id informado', () => {
-      it('retorna null', async () => {
-        const response = await salesModel.getById();
-        expect(response).to.be.equal(null);
-      });
     });
       
     describe('quando existe um produto com o id informado', async () => {
@@ -159,19 +161,11 @@ describe('Testes do arquivo salesModel.js', () => {
       connection.execute.restore();
     });
 
-    describe('quando não existe uma venda com o id informado', () => {
-      it('retorna null', async () => {
-        const response = await salesModel.getById();
-        expect(response).to.be.equal(null);
-      });
-    });
-      
     describe('quando existe uma venda com o id informado', async () => {
       it('retorna o id', async () => {
-        const response = await salesModel.deleted(1);
+        const response = await salesModel.deleted(2);
 
-        expect(response).to.be.a('number');
-        expect(response).to.be.not.empty;
+        expect(response).to.be.eq(2);
       });
     });
   });

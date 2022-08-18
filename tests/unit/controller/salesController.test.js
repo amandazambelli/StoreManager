@@ -1,111 +1,227 @@
 const sinon = require('sinon');
 const { expect } = require('chai');
 
-const productsService = require('../../../services/productsService');
-const productsController = require('../../../controllers/productsController');
+const salesService = require('../../../services/salesService');
+const salesController = require('../../../controllers/salesController');
 
-describe('Testes do arquivo productsService.js', () => {
+describe('Testes do arquivo salesController.js', () => {
   describe('Ao chamar o controller de getAll na rota de vendas', () => {
 
-    const result = {
-      data: [
-        { id: 1, name: 'Martelo de Thor' },
-        { id: 2, name: 'Traje de encolhimento' },
-        { id: 3, name: 'Escudo do Capitão América' },
-      ],
-      code: 200,
-    };
-  
-    const response = {};
-    const request = {};
+    beforeEach(async () => {
 
-    before(async () => {
-      response.status = sinon.stub().return(response);
-      response.json = sinon.stub().return();
+      const result = [
+        {
+        "saleId": 1,
+        "date": "2021-09-09T04:54:29.000Z",
+        "productId": 1,
+        "quantity": 2
+        },
+        {
+          "saleId": 1,
+          "date": "2021-09-09T04:54:54.000Z",
+          "productId": 2,
+          "quantity": 2
+        },
+        {
+          "saleId": 2,
+          "date": "2022-08-18T17:57:10.000Z",
+          "productId": 3,
+          "quantity": 15
+        }
+      ];
 
       sinon.stub(salesService, 'getAll').resolves(result);
     });
 
-    after(async () => {
+    afterEach(async () => {
       salesService.getAll.restore();
     });
 
-    it('quando as vendas são retornadas com status 200', async () => {
-      const response = await salesController.getAll(request, response);
-
-      expect(response.status.calledWith(200)).to.be.equal(true);
-      expect(response.json.calledWith(result.data)).to.be.equal(true);
-    });
-  });
-
-  describe('Ao chamar o controller de getById na rota de vendas', () => {
-
-    describe('quando não existem vendas no Banco de Dados', async () => {
+    it('todas as vendas são retornadas com status 200', async () => {
       const response = {};
       const request = {};
 
-      before(() => {
-        request.params = { id: 1 };
+      response.status = sinon.stub().returns(response);
+      response.json = sinon.stub().returns();
+      
+      await salesController.getAll(request, response);
 
-        response.status = sinon.stub()
-          .returns(response);
-        response.send = sinon.stub()
-          .returns();
-
-        sinon.stub(salesService, 'getById')
-          .resolves(null);
-      });
-
-      after(() => {
-        salesService.getById.restore();
-      });
-
-      it('é chamado o status com o código 404 e a mensagem de "Product not found"', async () => {
-        await salesController.getById(request, response);
-
-        expect(response.status.calledWith(404)).to.be.equal(true);
-        expect(response.message.calledWith('Product not found')).to.be.equal(true);
-      });
+      expect(response.status.calledWith(200)).to.be.true;
     });
 
-    describe('quando existem vendas no Banco de Dados', async () => {
-      const response = {};
-      const request = {};
-
-      const getSalesById = [
+    it('as vendas são retornadas em forma de um array de objetos JSON', async () => {
+      const sales = [
         {
+          "saleId": 1,
           "date": "2021-09-09T04:54:29.000Z",
           "productId": 1,
           "quantity": 2
         },
         {
+          "saleId": 1,
           "date": "2021-09-09T04:54:54.000Z",
           "productId": 2,
           "quantity": 2
+        },
+        {
+          "saleId": 2,
+          "date": "2022-08-18T17:57:10.000Z",
+          "productId": 3,
+          "quantity": 15
         }
       ];
 
-      before(() => {
+      const response = {};
+      const request = {};
+
+      response.status = sinon.stub().returns(response);
+      response.json = sinon.stub().returns();
+      
+      await salesController.getAll(request, response);
+
+      expect(response.json.calledWith(sales)).to.be.true;
+    });
+  });
+
+  describe('Ao chamar o controller de getById na rota de vendas', () => {
+
+    describe('quando o id existe', async () => {
+      beforeEach(async () => {
+        const result = [
+          {
+            date: "2021-09-09T04:54:29.000Z",
+            productId: 1,
+            quantity: 2
+          },
+          {
+            date: "2021-09-09T04:54:54.000Z",
+            productId: 2,
+            quantity: 2
+          }
+        ];
+
+        sinon.stub(salesService, 'getById').resolves(result);
+      });
+
+      afterEach(async () => {
+        salesService.getById.restore();
+      });
+
+      it('as vendas são retornadas com status 200', async () => {
+        const response = {};
+        const request = {};
+          
         request.params = { id: 1 };
 
-        response.status = sinon.stub()
-          .returns(response);
-        response.send = sinon.stub()
-          .returns();
-
-        sinon.stub(salesService, 'getById')
-          .resolves(getSalesById);
-      });
-
-      after(() => {
-      salesService.getById.restore();
-      });
-
-      it('é chamado o status com o código 200 e json com objeto', async () => {
+        response.status = sinon.stub().returns(response);
+        response.json = sinon.stub().returns();
+        
         await salesController.getById(request, response);
 
-        expect(response.status.calledWith(200)).to.be.equal(true);
-        expect(response.json.calledWith(sinon.match.object).to.be.equal(getSalesById));
+        expect(response.status.calledWith(200)).to.be.true;
+      });
+
+      it('as vendas são retornadas como um array de objetos JSON', async () => {
+        const saleById = [
+          {
+            date: "2021-09-09T04:54:29.000Z",
+            productId: 1,
+            quantity: 2
+          },
+          {
+            date: "2021-09-09T04:54:54.000Z",
+            productId: 2,
+            quantity: 2
+          }
+        ];
+
+        const response = {};
+        const request = {};
+          
+        request.params = { id: 1 };
+
+        response.status = sinon.stub().returns(response);
+        response.json = sinon.stub().returns();
+        
+        await salesController.getById(request, response);
+
+        expect(response.json.calledWith(saleById)).to.be.true;
+      });
+    });
+  });
+
+  describe('Ao chamar o controller da função create na rota de vendas', () => {
+
+    describe('quando o id é cadastrado com sucesso', async () => {
+      beforeEach(() => {
+        const result = {
+          id: 5,
+          itemsSold: [
+            {
+              productId: 1,
+              quantity: 1,
+            },
+            {
+              productId: 2,
+              quantity: 5,
+            },
+          ]
+        };
+
+        sinon.stub(salesService, 'create').resolves(result);
+      });
+
+      afterEach(() => {
+        salesService.create.restore();
+      });
+
+      it('as vendas são retornadas com status 201', async () => {
+        const response = {};
+        const request = {};
+
+        response.status = sinon.stub().returns(response);
+        response.json = sinon.stub().returns();
+        
+        await salesController.create(request, response);
+
+        expect(response.status.calledWith(201)).to.be.true;
+      });
+
+      it('as vendas são retornadas como objeto JSON', async () => {
+        const newSale = {
+          id: 5,
+          itemsSold: [
+            {
+              productId: 1,
+              quantity: 1
+            },
+            {
+              productId: 2,
+              quantity: 5
+            }
+          ]
+        };
+
+        const response = {};
+        const request = {};
+
+        request.body = [
+          {
+            "productId": 1,
+            "quantity": 1
+          },
+          {
+            "productId": 2,
+            "quantity": 5
+          }
+        ];
+
+        response.status = sinon.stub().returns(response);
+        response.json = sinon.stub().returns();
+        
+        await salesController.create(request, response);
+
+        expect(response.json.calledWith(newSale)).to.be.true;
       });
     });
   });

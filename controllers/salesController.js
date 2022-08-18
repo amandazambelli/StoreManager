@@ -7,64 +7,42 @@ const getAll = async (req, res) => {
 };
 
 const getById = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const sales = await salesService.getById(id);
+  const { id } = req.params;
+  const sales = await salesService.getById(id);
 
-    if (!sales) {
-      return res.status(404).json({ message: 'Sale not found' });
-    }
+  if (!sales) {
+    return res.status(404).json({ message: 'Sale not found' });
+  }
 
-    const listSalesById = sales.map((sale) => ({
-      date: sale.date,
-      productId: sale.productId,
-      quantity: sale.quantity,
-    }));
-
-    res.status(200).json(listSalesById);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }  
+  res.status(200).json(sales);
 };
 
 const create = async (req, res) => {
-  try {
-    const newSale = await salesService.create(req.body);
+  const newSale = await salesService.create(req.body);
 
-    res.status(201).json(newSale);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }  
+  res.status(201).json(newSale);
 };
 
 const update = async (req, res) => {
-  try {
-    const updateSale = await salesService.update(req.params, req.body);
+  const updateSale = await salesService.update(req.params, req.body);
 
-    if (!updateSale) {
-      return res.status(404).json({ message: 'Sale not found' });
-    }
+  if (!updateSale) {
+    return res.status(404).json({ message: 'Sale not found' });
+  }
 
-    res.status(200).json(updateSale);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }  
+  res.status(200).json(updateSale);
 };
 
 const deleted = async (req, res) => {
-  try {
-    const { id } = req.params;
+  const { id } = req.params;
 
-    const sales = await salesService.deleted(id);
+  const sales = await salesService.deleted(id);
 
-    if (!sales) {
-      return res.status(404).json({ message: 'Sale not found' });
-    }
+  if (!sales) {
+    return res.status(404).json({ message: 'Sale not found' });
+  }
 
-    res.status(204).end();
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }  
+  res.status(204).end();
 };
 
 module.exports = {
