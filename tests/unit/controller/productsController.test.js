@@ -153,7 +153,7 @@ describe('Testes do arquivo productsController.js', () => {
     });
   });
 
-  describe('Ao chamar o controller da função deleted na rota de produtos', () => {
+  /* describe('Ao chamar o controller da função deleted na rota de produtos', () => {
 
     beforeEach(() => {
         const result = true;
@@ -180,7 +180,7 @@ describe('Testes do arquivo productsController.js', () => {
         expect(response.status.calledWith(204)).to.be.true;
       });
     });
-  });
+  }); */
 
   describe('Ao chamar o controller de search na rota de produtos', () => {
 
@@ -210,7 +210,7 @@ describe('Testes do arquivo productsController.js', () => {
       });
 
       it('o produto é retornado como um array de objetos JSON', async () => {
-        const productByQuery = { id: 1, name: 'Martelo de Thor' };
+        const productByQuery = [{ id: 1, name: 'Martelo de Thor' }];
 
         const response = {};
         const request = {};

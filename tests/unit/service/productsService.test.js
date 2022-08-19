@@ -81,14 +81,15 @@ describe('Testes do arquivo productsService.js', () => {
 
       expect(response).to.be.an('object');
       expect(response).to.be.not.empty;
-      expect(response).to.include.all.keys('id', 'name');
+      expect(response).to.include.all.keys('name');
     });
   });
 
   describe('Atualiza um produto específico na função update', () => {
 
     before(async () => {
-      sinon.stub(productsModel, 'update').resolves(1);
+      sinon.stub(productsModel, 'getById').resolves(1);
+      sinon.stub(productsModel, 'update').resolves({ id: 1, name: 'Martelo do Batman' });
     });
     after(async () => {
       productsModel.update.restore();
@@ -109,7 +110,7 @@ describe('Testes do arquivo productsService.js', () => {
 
     before(async () => {
 
-      sinon.stub(productsModel, 'deleted').resolves();
+      sinon.stub(productsModel, 'deleted').resolves(1);
     });
     
     after(async () => {
@@ -120,7 +121,7 @@ describe('Testes do arquivo productsService.js', () => {
       it('retorna o id', async () => {
         const response = await productsService.deleted(1);
 
-        expect(response).to.be.eq(3);
+        expect(response).to.be.eq(1);
       });
     });
   });
@@ -132,7 +133,7 @@ describe('Testes do arquivo productsService.js', () => {
     ];
 
     before(async () => {
-      const execute = [product];
+      const execute = product;
 
       sinon.stub(productsModel, 'search').resolves(execute);
     });

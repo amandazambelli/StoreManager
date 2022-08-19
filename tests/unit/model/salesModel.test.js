@@ -84,7 +84,7 @@ describe('Testes do arquivo salesModel.js', () => {
     });
   });
 
-  describe('Testa função createSales', () => {
+  /* describe('Testa função createSales', () => {
 
     const id = 10;
     
@@ -103,7 +103,7 @@ describe('Testes do arquivo salesModel.js', () => {
 
       expect(response).to.be.eq(10);
     });
-  });
+  }); */
 
   describe('Cadastra nova venda com a função createSalesProduct', () => {
     
