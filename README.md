@@ -1,16 +1,26 @@
-# 🚧 README em construção 🚧
+# Project Store Manager #
 
-<!-- Olá, Tryber!
+Projeto realizado no módulo de Back-End do curso de desenvolvimento web da Trybe.
+Trata-se de uma API RESTful que utiliza a arquitetura MSC (model-service-controller)!
 
-Esse é apenas um arquivo inicial para o README do seu projeto.
+É um sistema de gerenciamento de vendas no formato dropshipping onde é possível criar, visualizar, deletar e atualizar produtos e vendas.
+Para a gestão de dados utilizei o banco de dados MySQL e para a cobertura de testes unitários foi utilizado Mocha, Chai e Sinnon.
 
-É essencial que você preencha esse documento por conta própria, ok?
+## Rotas ##
 
-Não deixe de usar nossas dicas de escrita de README de projetos, e deixe sua criatividade brilhar!
+### Produtos ###
 
-⚠️ IMPORTANTE: você precisa deixar nítido:
-- quais arquivos/pastas foram desenvolvidos por você; 
-- quais arquivos/pastas foram desenvolvidos por outra pessoa estudante;
-- quais arquivos/pastas foram desenvolvidos pela Trybe.
+GET | http://localhost:3000/products
+GET | http://localhost:3000/products/:id
+GET | http://localhost:3000/products/search?q=name
+POST | http://localhost:3000/products
+PUT | http://localhost:3000/products/:id
+DELETE | http://localhost:3000/products/:id
 
--->
+### Vendas ###
+
+GET | http://localhost:3000/sales
+GET | http://localhost:3000/sales/:id
+POST | http://localhost:3000/sales
+PUT | http://localhost:3000/sales/:id
+DELETE | http://localhost:3000/sales/:id
