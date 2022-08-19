@@ -11,16 +11,25 @@ Para a gestão de dados utilizei o banco de dados MySQL e para a cobertura de te
 ### Produtos ###
 
 GET | http://localhost:3000/products
+
 GET | http://localhost:3000/products/:id
+
 GET | http://localhost:3000/products/search?q=name
+
 POST | http://localhost:3000/products
+
 PUT | http://localhost:3000/products/:id
+
 DELETE | http://localhost:3000/products/:id
 
 ### Vendas ###
 
 GET | http://localhost:3000/sales
+
 GET | http://localhost:3000/sales/:id
+
 POST | http://localhost:3000/sales
+
 PUT | http://localhost:3000/sales/:id
+
 DELETE | http://localhost:3000/sales/:id
